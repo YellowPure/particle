@@ -1,5 +1,7 @@
 
 var canvas = document.getElementById('cv');
+canvas.width = document.body.clientWidth;
+canvas.height = document.body.clientHeight;
 var context = canvas.getContext('2d');
 var focallength = 250;
 var list = [
@@ -20,6 +22,11 @@ var list = [
         "type" : "string"
     }
 ];
+
+window.onresize = function() {
+    canvas.width = document.body.clientWidth;
+    canvas.height = document.body.clientHeight;
+}
 
 var Dot = function (centerX, centerY, centerZ, radius, color) {
     this.dx = centerX; //保存原位置
@@ -51,6 +58,12 @@ var derection = true;
 
 var img = new Image();
 var curIndex = 0;
+
+var RAF = (function() {
+    return window.requestAnimationFrame|| function(callback) {
+        return window.setTimeout(callback,1000/60);
+    }
+})();
 
 function scroll() {
     context.clearRect(0,0,canvas.width,canvas.height);
@@ -117,6 +130,7 @@ function animate() {
         item.paint();
     });
     if (!pause) {
+        // RAF(animate);
         requestAnimationFrame(animate);
     }else {
         context.clearRect(0,0,canvas.width,canvas.height);
@@ -156,7 +170,7 @@ function drawImage(src,cb) {
 
 function drawText(text) {
     context.save();
-    context.font = "150px bold";
+    context.font = "150px microsoftyahei bold";
     var r = parseInt(Math.random()*125+130);
     var g = parseInt(Math.random()*125+130);
     var b = parseInt(Math.random()*125+130);
